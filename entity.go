@@ -9,6 +9,14 @@ type Entity interface {
 	Table() string
 }
 
+type EntityHandler interface {
+	Create(entity Entity) error
+	FindOne(entity Entity, where string, whereParams ...interface{}) (Entity, error)
+	FindAll(entity Entity, where string, whereParams ...interface{}) ([]Entity, error)
+	Update(entity Entity) error
+	Delete(entity Entity) error
+}
+
 func NewEntity(e Entity) Entity {
 	mustBeStructPtr(e)
 	entityType := reflect.TypeOf(e).Elem()

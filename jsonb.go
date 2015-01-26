@@ -32,3 +32,15 @@ func (j *JSONB) MarshalJSON() ([]byte, error) {
 	}
 	return []byte("null"), nil
 }
+
+// UnmarshalJSON implements the `json.Unmarshaler` interface
+func (j *JSONB) UnmarshalJSON(bytes []byte) error {
+	if len(bytes) > 0 {
+		j.NullString.String = string(bytes)
+		j.NullString.Valid = true
+	} else {
+		j.NullString.String = ""
+		j.NullString.Valid = false
+	}
+	return nil
+}

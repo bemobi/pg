@@ -13,6 +13,25 @@ type driverWrapper interface {
 	Query(query string, args ...interface{}) (*sql.Rows, error)
 }
 
+func query(driver driverWrapper, result Result, sql string, params ...interface{}) ([]Result, error) {
+	rows, err := driver.Query(sql, params...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	list := make([]Result, 0)
+	for rows.Next() {
+		instance := NewResult(result)
+		err := fields{instance}.Scan(rows)
+		if err != nil {
+			return nil, err
+		}
+		list = append(list, instance)
+	}
+	return list, nil
+}
+
 func create(driver driverWrapper, entity Entity) error {
 	ef := fields{entity}
 

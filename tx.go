@@ -2,7 +2,7 @@ package pg
 
 import "database/sql"
 
-// Tx implements the EntityHandler interface
+// Tx implements the EntityHandler and the ResultHandler interfaces
 type Tx struct {
 	tx *sql.Tx
 }
@@ -33,4 +33,8 @@ func (t *Tx) Update(entity Entity) error {
 
 func (t *Tx) Delete(entity Entity) error {
 	return delete(t.tx, entity)
+}
+
+func (t *Tx) Query(result Result, sql string, params ...interface{}) ([]Result, error) {
+	return query(t.tx, result, sql, params...)
 }

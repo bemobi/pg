@@ -6,12 +6,12 @@ import (
 )
 
 type fields struct {
-	Entity
+	Result
 }
 
 func (f fields) extract() []reflect.StructField {
-	mustBeStructPtr(f.Entity)
-	entityType := reflect.TypeOf(f.Entity).Elem()
+	mustBeStructPtr(f.Result)
+	entityType := reflect.TypeOf(f.Result).Elem()
 	list := make([]reflect.StructField, 0)
 	for i := 0; i < entityType.NumField(); i++ {
 		field := entityType.Field(i)
@@ -44,7 +44,7 @@ func (f fields) autofilled(autofilled bool) []string {
 }
 
 func (f fields) autofilledValues(autofilled bool) []interface{} {
-	entityValue := reflect.ValueOf(f.Entity).Elem()
+	entityValue := reflect.ValueOf(f.Result).Elem()
 	values := make([]interface{}, 0)
 	for _, field := range f.extract() {
 		t := newTag(field)
@@ -68,7 +68,7 @@ func (f fields) pk(pk bool) []string {
 }
 
 func (f fields) pkValues(pk bool) []interface{} {
-	entityValue := reflect.ValueOf(f.Entity).Elem()
+	entityValue := reflect.ValueOf(f.Result).Elem()
 	values := make([]interface{}, 0)
 	for _, field := range f.extract() {
 		t := newTag(field)
@@ -89,7 +89,7 @@ func (f fields) notUpdatable() []string {
 }
 
 func (f fields) values() []interface{} {
-	entityValue := reflect.ValueOf(f.Entity).Elem()
+	entityValue := reflect.ValueOf(f.Result).Elem()
 	list := make([]interface{}, 0)
 	for _, field := range f.extract() {
 		value := entityValue.FieldByName(field.Name).Addr().Interface()

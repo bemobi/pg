@@ -12,7 +12,7 @@ var (
 	EMultipleResults = errors.New("Unexpected multiple results from query")
 )
 
-// Session implements the EntityHandler interface
+// Session implements the EntityHandler and the ResultHandler interface
 type Session struct {
 	DB *sql.DB
 }
@@ -43,6 +43,10 @@ func (s *Session) Update(entity Entity) error {
 
 func (s *Session) Delete(entity Entity) error {
 	return delete(s.DB, entity)
+}
+
+func (s *Session) Query(result Result, sql string, params ...interface{}) ([]Result, error) {
+	return query(s.DB, result, sql, params...)
 }
 
 func (s *Session) Tx() (*Tx, error) {

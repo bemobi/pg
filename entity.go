@@ -6,6 +6,7 @@ import (
 )
 
 type Entity interface {
+	Result
 	Table() string
 }
 
@@ -24,7 +25,7 @@ func NewEntity(e Entity) Entity {
 	return newEntity.Interface().(Entity)
 }
 
-func mustBeStructPtr(e Entity) {
+func mustBeStructPtr(e interface{}) {
 	v := reflect.ValueOf(e)
 	t := v.Type()
 	if t.Kind() != reflect.Ptr || t.Elem().Kind() != reflect.Struct {

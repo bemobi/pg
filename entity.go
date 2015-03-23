@@ -8,6 +8,7 @@ import (
 type Entity interface {
 	Result
 	Table() string
+	OrderBy() string
 }
 
 type EntityHandler interface {

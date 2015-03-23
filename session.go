@@ -49,6 +49,10 @@ func (s *Session) Query(result Result, sql string, params ...interface{}) ([]Res
 	return query(s.DB, result, sql, params...)
 }
 
+func (s *Session) Exec(query string, args ...interface{}) (sql.Result, error) {
+	return exec(s.DB, query, args...)
+}
+
 func (s *Session) Tx() (*Tx, error) {
 	tx, err := s.DB.Begin()
 	if err != nil {

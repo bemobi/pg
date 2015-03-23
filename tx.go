@@ -38,3 +38,7 @@ func (t *Tx) Delete(entity Entity) error {
 func (t *Tx) Query(result Result, sql string, params ...interface{}) ([]Result, error) {
 	return query(t.tx, result, sql, params...)
 }
+
+func (t *Tx) Exec(query string, args ...interface{}) (sql.Result, error) {
+	return exec(t.tx, query, args...)
+}

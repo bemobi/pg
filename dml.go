@@ -32,6 +32,10 @@ func query(driver driverWrapper, result Result, sql string, params ...interface{
 	return list, nil
 }
 
+func exec(driver driverWrapper, sql string, params ...interface{}) (sql.Result, error) {
+	return driver.Exec(sql, params...)
+}
+
 func create(driver driverWrapper, entity Entity) error {
 	ef := fields{entity}
 
@@ -183,6 +187,9 @@ func findAll(driver driverWrapper, entity Entity, where string, whereParams ...i
 		sql.WriteString(" where ")
 		sql.WriteString(where)
 	}
+
+	sql.WriteString(" order by ")
+	sql.WriteString(entity.OrderBy())
 
 	rows, err := driver.Query(sql.String(), whereParams...)
 	if err != nil {
